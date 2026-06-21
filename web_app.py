@@ -12,6 +12,7 @@ import math
 import logging
 
 from flask import Flask, render_template, request, jsonify
+from flask_cors import CORS
 
 # Ensure src directory is in path
 sys.path.insert(0, os.path.join(os.path.abspath(os.path.dirname(__file__)), "src"))
@@ -25,6 +26,9 @@ logger = logging.getLogger("gastroai_web")
 
 # Initialize Flask app
 app = Flask(__name__)
+
+# Configure CORS (allow all origins for now, we can restrict this later to the vercel domain)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # Initialize recommendation engine (singleton)
 engine = RecommendationEngine()

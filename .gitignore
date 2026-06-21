@@ -39,7 +39,6 @@ Desktop.ini
 logs/
 
 # ─── Database (generated) ───────────────────────────────
-data/restaurants.db
 
 # ─── Jupyter Notebooks ──────────────────────────────────
 .ipynb_checkpoints/
@@ -55,6 +54,5 @@ data/restaurants.db
 # --- Data ------------------------------------------------
 data/raw/
 data/processed/
-data/*.db
 *.parquet
 *.csv

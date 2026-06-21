@@ -7,8 +7,10 @@
     'use strict';
 
     // ═══════════════════════════════════════════════════════════════════════════
-    // State
+    // State & Config
     // ═══════════════════════════════════════════════════════════════════════════
+    const BACKEND_URL = ''; // TODO: Update this with your Railway deployment URL (e.g., 'https://gastroai-backend.up.railway.app')
+    
     const state = {
         mode: 'ai', // 'ai' or 'filter'
         locations: [],
@@ -95,7 +97,7 @@
     // ═══════════════════════════════════════════════════════════════════════════
     async function loadLocations() {
         try {
-            const res = await fetch('/api/locations');
+            const res = await fetch(`${BACKEND_URL}/api/locations`);
             const data = await res.json();
             state.locations = data.locations || [];
             populateLocationDropdowns();
@@ -106,7 +108,7 @@
 
     async function loadCuisines() {
         try {
-            const res = await fetch('/api/cuisines');
+            const res = await fetch(`${BACKEND_URL}/api/cuisines`);
             const data = await res.json();
             state.cuisines = data.cuisines || [];
         } catch (e) {
@@ -116,7 +118,7 @@
 
     async function loadRestaurantTypes() {
         try {
-            const res = await fetch('/api/restaurant-types');
+            const res = await fetch(`${BACKEND_URL}/api/restaurant-types`);
             const data = await res.json();
             state.restaurantTypes = data.types || [];
         } catch (e) {
@@ -329,7 +331,7 @@
         dom.aiSearchBtn.disabled = true;
 
         try {
-            const res = await fetch('/api/recommend', {
+            const res = await fetch(`${BACKEND_URL}/api/recommend`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ query, limit: 6 }),
@@ -375,7 +377,7 @@
         dom.filterSearchBtn.disabled = true;
 
         try {
-            const res = await fetch('/api/filter', {
+            const res = await fetch(`${BACKEND_URL}/api/filter`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
