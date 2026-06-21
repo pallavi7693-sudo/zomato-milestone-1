@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GastroAI - Premium Gastronomy</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#92001c",
+                        "error": "#ffb4ab",
+                        "on-secondary-fixed": "#410007",
+                        "inverse-on-surface": "#313030",
+                        "background": "#131313",
+                        "surface-bright": "#3a3939",
+                        "secondary-container": "#a90022",
+                        "on-tertiary-fixed": "#1b1c1c",
+                        "primary-container": "#cb202d",
+                        "surface-container-high": "#2a2a2a",
+                        "secondary-fixed": "#ffdad8",
+                        "surface-dim": "#131313",
+                        "primary": "#ffb3af",
+                        "on-surface-variant": "#e4bdbb",
+                        "on-surface": "#e5e2e1",
+                        "on-secondary": "#680011",
+                        "tertiary-container": "#696868",
+                        "on-error": "#690005",
+                        "on-tertiary": "#303030",
+                        "inverse-surface": "#e5e2e1",
+                        "secondary": "#ffb3b1",
+                        "primary-fixed": "#ffdad7",
+                        "surface-container-highest": "#353534",
+                        "on-secondary-container": "#ffb3b0",
+                        "surface-tint": "#ffb3af",
+                        "surface-container-low": "#1c1b1b",
+                        "on-tertiary-container": "#eae8e7",
+                        "on-error-container": "#ffdad6",
+                        "tertiary": "#c8c6c6",
+                        "primary-fixed-dim": "#ffb3af",
+                        "surface-variant": "#353534",
+                        "on-primary-container": "#ffe2e0",
+                        "on-background": "#e5e2e1",
+                        "surface-container-lowest": "#0e0e0e",
+                        "secondary-fixed-dim": "#ffb3b1",
+                        "surface-container": "#201f1f",
+                        "on-tertiary-fixed-variant": "#474747",
+                        "on-primary": "#68000d",
+                        "surface": "#131313",
+                        "outline-variant": "#5b403e",
+                        "on-primary-fixed": "#410005",
+                        "error-container": "#93000a",
+                        "tertiary-fixed": "#e4e2e1",
+                        "on-primary-fixed-variant": "#930017",
+                        "tertiary-fixed-dim": "#c8c6c6",
+                        "outline": "#ab8886",
+                        "inverse-primary": "#bc1124"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "margin-desktop": "40px",
+                        "sm": "12px",
+                        "base": "4px",
+                        "xl": "32px",
+                        "lg": "24px",
+                        "gutter": "16px",
+                        "md": "16px",
+                        "xs": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Outfit"],
+                        "headline-lg-mobile": ["Outfit"],
+                        "body-sm": ["Outfit"],
+                        "title-lg": ["Outfit"],
+                        "label-md": ["Outfit"],
+                        "body-md": ["Outfit"],
+                        "display-lg": ["Outfit"],
+                        "body-lg": ["Outfit"],
+                        "headline-lg": ["Outfit"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "title-lg": ["20px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "1.2", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #0D0D0D; color: #e5e2e1; }
+        .glass-panel {
+            background-color: rgba(26, 26, 26, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .ai-glow { box-shadow: 0 0 20px rgba(203, 32, 45, 0.15); }
+        .card-surface { background-color: #1A1A1A; border: 1px solid #2D2D2D; }
+        .input-surface { background-color: #242424; border: 1px solid #2D2D2D; transition: border-color 0.2s; }
+        .input-surface:focus-within { border-color: #CB202D; }
+        
+        /* Custom Scrollbar for dark theme */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0D0D0D; }
+        ::-webkit-scrollbar-thumb { background: #2D2D2D; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #474747; }
+    </style>
+</head>
+<body class="font-body-md text-body-md min-h-screen flex flex-col overflow-hidden">
+<!-- TopAppBar -->
+<header class="bg-surface/40 backdrop-blur-md fixed top-0 w-full z-50 border-b border-white/10 shadow-sm flex items-center justify-between px-margin-mobile md:px-margin-desktop h-20">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-[32px]">menu</span>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container text-[32px]">lunch_dining</span>
+<span class="font-display-lg text-[32px] font-extrabold text-primary tracking-tighter">GastroAI</span>
+</div>
+</div>
+<!-- Desktop Nav / Mode Toggle -->
+<div class="hidden md:flex items-center bg-surface-container-high rounded-full p-1 border border-outline-variant/30">
+<button class="px-6 py-2 rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md shadow-lg transition-colors">AI Assistant</button>
+<button class="px-6 py-2 rounded-full text-on-surface-variant hover:text-on-surface transition-colors font-label-md text-label-md">Filter Search</button>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-on-surface-variant hover:text-primary transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined text-[28px]">notifications</span>
+</button>
+<div class="flex items-center gap-3 cursor-pointer group">
+<img class="w-10 h-10 rounded-full object-cover border border-outline-variant/50 group-hover:border-primary transition-colors" data-alt="A high-quality, professional headshot of a sophisticated diner, sharply dressed, set against a dark, moody luxury restaurant background with subtle warm lighting. Modern, premium aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQ_QT4IPXYHyo11587nj6uh6WtdLdtBWS2qNCNZU9IMc20RJ866VLjE5DRK01PIJLrA5NpiPrAV_SAqzKg5jHzOBdrQJM70z3dyc5CB-oIj4v3TW62Sr8hxaiOPxAH4yzSq5br9GZ_ttBqUqqYvdDrr2W1ayiD_YY1cHtZgbjNkuKq8rdKoWPsm2GwcOsBqqWJJJQFPv5jck0WeqUdUlnJB1Gz_m030iBKhHFKrX_75PHPzJgFZPinRwoMqnigUZQggPDyjjmuXWBc"/>
+<div class="hidden md:block">
+<p class="font-label-md text-label-md text-on-surface">Gastronome Elite</p>
+<p class="text-[12px] text-primary">Premium Member</p>
+</div>
+</div>
+</div>
+</header>
+<div class="flex flex-1 pt-20 h-screen overflow-hidden">
+<!-- NavigationDrawer (Sidebar) - Hidden by default in AI Mode, shown for Filter mode structure -->
+<aside class="h-full w-80 flex-shrink-0 bg-surface-container-low/40 backdrop-blur-xl border-r border-white/10 shadow-xl flex flex-col py-6 gap-2 hidden md:flex overflow-y-auto">
+<!-- Content matches JSON layout exactly -->
+<nav class="flex-1 px-4 space-y-2">
+<a class="bg-primary-container text-on-primary-container rounded-xl flex items-center gap-4 px-4 py-3 active:translate-x-1 duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">magic_button</span>
+<span class="font-label-md text-label-md font-bold">AI Assistant</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant/50 rounded-xl flex items-center gap-4 px-4 py-3 hover:text-on-surface transition-all active:translate-x-1 duration-150" href="#">
+<span class="material-symbols-outlined">search</span>
+<span class="font-label-md text-label-md">Search</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant/50 rounded-xl flex items-center gap-4 px-4 py-3 hover:text-on-surface transition-all active:translate-x-1 duration-150" href="#">
+<span class="material-symbols-outlined">favorite</span>
+<span class="font-label-md text-label-md">Favorites</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant/50 rounded-xl flex items-center gap-4 px-4 py-3 hover:text-on-surface transition-all active:translate-x-1 duration-150" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-md text-label-md">History</span>
+</a>
+<div class="mt-8 pt-6 border-t border-white/10">
+<p class="px-4 text-[12px] uppercase tracking-wider text-on-surface-variant/70 mb-4 font-bold">Quick Filters</p>
+<div class="px-4 space-y-6">
+<!-- Location -->
+<div>
+<label class="font-label-md text-label-md text-on-surface mb-2 block">Location</label>
+<div class="input-surface rounded-lg px-3 py-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">location_on</span>
+<input class="bg-transparent border-none text-on-surface font-body-sm focus:ring-0 w-full p-0" type="text" value="New York City, NY"/>
+</div>
+</div>
+<!-- Dining Style Chips -->
+<div>
+<label class="font-label-md text-label-md text-on-surface mb-2 block">Dining Style</label>
+<div class="flex flex-wrap gap-2">
+<button class="px-3 py-1.5 bg-primary-container/20 border border-primary-container/50 text-primary rounded-[8px] font-label-md text-[12px]">Fine Dining</button>
+<button class="px-3 py-1.5 bg-[#242424] text-on-surface-variant rounded-[8px] font-label-md text-[12px] hover:bg-[#2D2D2D] transition-colors">Casual</button>
+<button class="px-3 py-1.5 bg-[#242424] text-on-surface-variant rounded-[8px] font-label-md text-[12px] hover:bg-[#2D2D2D] transition-colors">Romantic</button>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<!-- Bottom Settings -->
+<div class="px-4 mt-auto pt-4 border-t border-white/10">
+<a class="text-on-surface-variant hover:bg-surface-variant/50 rounded-xl flex items-center gap-4 px-4 py-3 hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto relative bg-background pb-24 md:pb-8">
+<!-- AI Assistant View (Active) -->
+<div class="max-w-4xl mx-auto px-margin-mobile md:px-margin-desktop py-12 flex flex-col min-h-full justify-center">
+<div class="text-center mb-12">
+<span class="material-symbols-outlined text-[64px] text-primary-container mb-4" style="font-variation-settings: 'FILL' 1;">restaurant</span>
+<h1 class="font-display-lg text-display-lg text-on-surface mb-4">What are you craving?</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Let GastroAI curate the perfect dining experience for you tonight.</p>
+</div>
+<!-- AI Input Box -->
+<div class="ai-glow rounded-[16px] p-1 bg-gradient-to-r from-primary-container/30 to-background">
+<div class="input-surface rounded-[14px] p-4 flex flex-col gap-4 relative">
+<textarea class="w-full bg-transparent border-none text-on-surface font-body-lg resize-none focus:ring-0 placeholder-on-surface-variant/50 p-0" placeholder="e.g., I want a romantic Italian place in Manhattan with a great wine list, under $150 for two..." rows="3"></textarea>
+<div class="flex justify-between items-end border-t border-white/10 pt-4">
+<div class="flex gap-2">
+<button class="p-2 rounded-full hover:bg-white/5 text-on-surface-variant transition-colors" title="Use Voice">
+<span class="material-symbols-outlined">mic</span>
+</button>
+<button class="p-2 rounded-full hover:bg-white/5 text-on-surface-variant transition-colors" title="Upload Image">
+<span class="material-symbols-outlined">image</span>
+</button>
+</div>
+<button class="bg-gradient-to-r from-primary-container to-[#8a141d] text-white px-6 py-3 rounded-[12px] font-title-lg text-title-lg flex items-center gap-2 hover:shadow-[0_0_15px_rgba(203,32,45,0.4)] transition-all">
+<span class="material-symbols-outlined">auto_awesome</span>
+                                Find Recommendations
+                            </button>
+</div>
+</div>
+</div>
+<!-- Suggestion Chips -->
+<div class="mt-8 flex flex-wrap justify-center gap-3">
+<button class="px-4 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-full text-on-surface-variant font-label-md text-label-md flex items-center gap-2 hover:border-primary-container/50 hover:text-on-surface transition-all">
+<span class="material-symbols-outlined text-[18px]">trending_up</span>
+                        Trending in Soho
+                    </button>
+<button class="px-4 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-full text-on-surface-variant font-label-md text-label-md flex items-center gap-2 hover:border-primary-container/50 hover:text-on-surface transition-all">
+<span class="material-symbols-outlined text-[18px]">local_fire_department</span>
+                        Spicy Thai Food
+                    </button>
+<button class="px-4 py-2 bg-[#1A1A1A] border border-[#2D2D2D] rounded-full text-on-surface-variant font-label-md text-label-md flex items-center gap-2 hover:border-primary-container/50 hover:text-on-surface transition-all">
+<span class="material-symbols-outlined text-[18px]">celebration</span>
+                        Birthday Dinner spots
+                    </button>
+</div>
+</div>
+<!-- Sample Results View (Hidden by default, shown for context of layout request) -->
+<div class="max-w-5xl mx-auto px-margin-mobile md:px-margin-desktop py-8 hidden">
+<div class="flex items-center gap-4 mb-6 pb-6 border-b border-white/10 overflow-x-auto">
+<span class="font-label-md text-label-md text-on-surface-variant whitespace-nowrap">Parsed Intent:</span>
+<span class="px-3 py-1 bg-surface-container-high border border-outline-variant/30 rounded-lg text-on-surface font-body-sm whitespace-nowrap">Italian</span>
+<span class="px-3 py-1 bg-surface-container-high border border-outline-variant/30 rounded-lg text-on-surface font-body-sm whitespace-nowrap">Romantic</span>
+<span class="px-3 py-1 bg-surface-container-high border border-outline-variant/30 rounded-lg text-on-surface font-body-sm whitespace-nowrap">Manhattan</span>
+</div>
+<!-- Cards would go here following the Card Design (Desktop) spec -->
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="bg-surface-container-lowest/40 backdrop-blur-lg fixed bottom-0 w-full z-50 rounded-t-xl border-t border-white/10 shadow-[0_-4px_20px_rgba(203,32,45,0.15)] flex justify-around items-center h-16 px-4 md:hidden">
+<a class="flex flex-col items-center justify-center text-primary font-bold active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
+<span class="font-label-md text-[10px]">Concierge</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 hover:text-on-surface transition-opacity active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-1">explore</span>
+<span class="font-label-md text-[10px]">Discover</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 hover:text-on-surface transition-opacity active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-1">bookmark</span>
+<span class="font-label-md text-[10px]">Saves</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 hover:text-on-surface transition-opacity active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-1">person</span>
+<span class="font-label-md text-[10px]">Profile</span>
+</a>
+</nav>
+</body></html>

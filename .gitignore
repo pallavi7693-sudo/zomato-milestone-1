@@ -1,0 +1,60 @@
+# ─── Python ──────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.manifest
+*.spec
+
+# ─── Virtual Environment ─────────────────────────────────
+.venv/
+venv/
+ENV/
+
+# ─── Environment Variables ───────────────────────────────
+.env
+.env.local
+.env.*.local
+
+# ─── IDE / Editor ────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+
+# ─── OS Files ────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ─── Logs ────────────────────────────────────────────────
+*.log
+logs/
+
+# ─── Database (generated) ───────────────────────────────
+data/restaurants.db
+
+# ─── Jupyter Notebooks ──────────────────────────────────
+.ipynb_checkpoints/
+
+# ─── Misc ────────────────────────────────────────────────
+*.bak
+*.tmp
+
+# --- Testing ---------------------------------------------
+.pytest_cache/
+.coverage
+
+# --- Data ------------------------------------------------
+data/raw/
+data/processed/
+data/*.db
+*.parquet
+*.csv

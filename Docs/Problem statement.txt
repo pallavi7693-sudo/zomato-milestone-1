@@ -1,0 +1,330 @@
+# Problem Statement: AI-Powered Restaurant Recommendation System Using LLMs (Zomato-Inspired Use Case)
+
+## Background
+
+Restaurant discovery platforms provide users with thousands of dining options, making it difficult to identify restaurants that best match individual preferences. Traditional filtering methods based on location, cuisine, ratings, and cost often produce long lists of results without explaining why specific restaurants are suitable. Recent advances in Large Language Models (LLMs) enable recommendation systems to provide personalized, context-aware, and conversational suggestions that improve user decision-making.
+
+This project aims to develop an AI-powered restaurant recommendation system inspired by restaurant discovery platforms such as Zomato. The system will combine structured restaurant data with the reasoning and natural language generation capabilities of an LLM to deliver personalized restaurant recommendations along with human-readable explanations.
+
+---
+
+# Problem Definition
+
+Design and implement an intelligent restaurant recommendation application that analyzes user preferences and recommends the most relevant restaurants from a real-world restaurant dataset. The system should leverage both traditional data filtering techniques and a Large Language Model (LLM) to generate personalized, explainable, and ranked recommendations.
+
+The application should allow users to specify dining preferences such as:
+
+* Preferred location
+* Budget constraints
+* Cuisine preferences
+* Minimum acceptable rating
+* Additional requirements (family-friendly environment, quick service, fine dining, casual dining, etc.)
+
+Based on these inputs, the system should identify suitable restaurants from the dataset and use an LLM to generate meaningful recommendations that explain why each restaurant is a good match for the user's requirements.
+
+---
+
+# Objectives
+
+The primary objectives of the system are:
+
+### 1. Personalized Recommendations
+
+Provide restaurant recommendations tailored to individual user preferences.
+
+### 2. Explainable AI Suggestions
+
+Generate natural language explanations describing why each restaurant was selected.
+
+### 3. Intelligent Ranking
+
+Use LLM-based reasoning to rank restaurants beyond simple filtering and sorting.
+
+### 4. Enhanced User Experience
+
+Present recommendations in an easy-to-understand and user-friendly format.
+
+### 5. Real-World Data Utilization
+
+Utilize restaurant information from the Zomato Restaurant Recommendation Dataset available on Hugging Face.
+
+---
+
+# Dataset Requirements
+
+The system must ingest and process the Zomato Restaurant Recommendation dataset:
+
+**Dataset Source:**
+
+[https://huggingface.co/datasets/ManikaSaini/zomato-restaurant-recommendation](https://huggingface.co/datasets/ManikaSaini/zomato-restaurant-recommendation)
+
+### Key Attributes to Extract
+
+The following fields should be extracted and cleaned for recommendation purposes:
+
+| Field                      | Description                            |
+| -------------------------- | -------------------------------------- |
+| Restaurant Name            | Name of the restaurant                 |
+| Location                   | City or locality                       |
+| Cuisine                    | Types of cuisines offered              |
+| Rating                     | Customer rating                        |
+| Cost                       | Average cost for two people            |
+| Votes                      | Number of customer reviews/votes       |
+| Restaurant Type            | Casual Dining, Cafe, Fine Dining, etc. |
+| Online Order Availability  | Yes/No                                 |
+| Table Booking Availability | Yes/No                                 |
+
+Additional fields may be incorporated if available.
+
+---
+
+# Functional Requirements
+
+## Module 1: Data Ingestion and Preprocessing
+
+### Requirements
+
+* Load the dataset from Hugging Face.
+* Handle missing values.
+* Standardize location names.
+* Normalize rating and cost values.
+* Convert categorical attributes into machine-readable formats where necessary.
+* Store cleaned data in an efficient structure for querying.
+
+### Expected Output
+
+A cleaned and searchable restaurant database.
+
+---
+
+## Module 2: User Preference Collection
+
+The system should collect the following inputs:
+
+### Mandatory Inputs
+
+* Location
+* Budget Range
+* Preferred Cuisine
+* Minimum Rating
+
+### Optional Inputs
+
+* Family-friendly atmosphere
+* Quick service
+* Fine dining preference
+* Outdoor seating
+* Delivery availability
+* Table booking availability
+* Vegetarian/Vegan options
+
+### Example User Query
+
+```text
+I am looking for an Italian restaurant in Bangalore with a budget of ₹1500 for two people and a rating above 4.2. It should be family-friendly and have table booking available.
+```
+
+---
+
+## Module 3: Recommendation Candidate Generation
+
+Before invoking the LLM, the system should:
+
+### Filtering Criteria
+
+* Match location
+* Match cuisine
+* Match budget range
+* Satisfy minimum rating threshold
+* Apply optional preference filters
+
+### Candidate Selection
+
+Generate a shortlist of restaurants that satisfy the user's constraints.
+
+### Example
+
+From 10,000 restaurants, filtering may reduce candidates to 20–50 relevant restaurants.
+
+---
+
+## Module 4: LLM-Based Recommendation Engine
+
+The shortlisted restaurants should be provided to an LLM using a carefully engineered prompt.
+
+### LLM Responsibilities
+
+#### Restaurant Ranking
+
+Rank restaurants based on:
+
+* User preferences
+* Ratings
+* Popularity
+* Cost suitability
+* Additional preferences
+
+#### Recommendation Explanation
+
+Generate personalized reasoning such as:
+
+> "This restaurant is highly rated, serves authentic Italian cuisine, falls within your budget, and offers table booking, making it suitable for family dining."
+
+#### Comparative Analysis
+
+Optionally compare top recommendations.
+
+#### Summary Generation
+
+Provide an overall recommendation summary.
+
+---
+
+# Prompt Engineering Requirements
+
+The prompt should include:
+
+### User Profile
+
+```json
+{
+  "location": "Bangalore",
+  "budget": "1500",
+  "cuisine": "Italian",
+  "minimum_rating": 4.2,
+  "preferences": ["family-friendly", "table booking"]
+}
+```
+
+### Restaurant Candidates
+
+Structured restaurant data should be injected into the prompt.
+
+### Desired Output Format
+
+The LLM should return:
+
+* Ranked recommendations
+* Match score (optional)
+* Explanation
+* Summary
+
+---
+
+# Module 5: Recommendation Presentation Layer
+
+The system should display recommendations in a structured and user-friendly format.
+
+### Example Output
+
+| Rank | Restaurant     | Cuisine | Rating | Cost for Two | Reason                                                                                     |
+| ---- | -------------- | ------- | ------ | ------------ | ------------------------------------------------------------------------------------------ |
+| 1    | Trattoria Roma | Italian | 4.6    | ₹1400        | Excellent rating, authentic Italian cuisine, family-friendly atmosphere, and within budget |
+| 2    | Bella Italia   | Italian | 4.4    | ₹1200        | Affordable option with strong reviews and table booking availability                       |
+
+---
+
+# Non-Functional Requirements
+
+## Performance
+
+* Recommendations should be generated within 5 seconds.
+* Dataset filtering should be optimized.
+
+## Scalability
+
+* Support datasets containing thousands of restaurants.
+* Support multiple concurrent users.
+
+## Explainability
+
+* Every recommendation must include a clear justification.
+
+## Reliability
+
+* Handle incomplete user inputs gracefully.
+* Handle missing dataset values without system failure.
+
+## Usability
+
+* Simple and intuitive user interface.
+* Mobile and desktop compatible.
+
+---
+
+# System Architecture
+
+```text
+                +------------------+
+                |  User Interface  |
+                +--------+---------+
+                         |
+                         v
+                +------------------+
+                | Input Processor  |
+                +--------+---------+
+                         |
+                         v
+                +------------------+
+                | Restaurant Filter|
+                +--------+---------+
+                         |
+                         v
+                +------------------+
+                | Candidate Results|
+                +--------+---------+
+                         |
+                         v
+                +------------------+
+                |      LLM Layer   |
+                | Ranking & Reason |
+                +--------+---------+
+                         |
+                         v
+                +------------------+
+                | Recommendation UI|
+                +------------------+
+```
+
+---
+
+# Expected Deliverables
+
+1. Data ingestion and preprocessing pipeline.
+2. Restaurant filtering module.
+3. Prompt engineering strategy.
+4. LLM integration component.
+5. Recommendation ranking engine.
+6. User interface (Web, Streamlit, Flask, or React-based).
+7. Documentation describing:
+
+   * Dataset preprocessing
+   * Recommendation logic
+   * Prompt design
+   * System architecture
+   * Evaluation methodology
+
+---
+
+# Evaluation Criteria
+
+| Metric            | Description                             |
+| ----------------- | --------------------------------------- |
+| Relevance         | Recommendations match user preferences  |
+| Personalization   | Ability to adapt to different users     |
+| Explainability    | Quality of generated explanations       |
+| Accuracy          | Correct filtering and ranking           |
+| Response Time     | Speed of recommendation generation      |
+| User Satisfaction | Perceived usefulness of recommendations |
+
+---
+
+# Success Criteria
+
+The project will be considered successful if it can:
+
+* Accurately identify restaurants matching user requirements.
+* Generate meaningful and personalized recommendations using an LLM.
+* Explain recommendation decisions clearly.
+* Rank restaurants intelligently rather than relying solely on ratings.
+* Deliver recommendations through an intuitive and responsive user interface.

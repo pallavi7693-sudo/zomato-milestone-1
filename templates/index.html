@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GastroAI — AI-Powered Restaurant Discovery</title>
+    <meta name="description" content="GastroAI combines AI intelligence with restaurant data to deliver personalized, explainable dining recommendations." />
+    <meta name="theme-color" content="#0e0e0e" />
+
+    <!-- Google Fonts: Outfit + Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="/static/css/styles.css" />
+</head>
+<body>
+    <!-- ═══ Loading Overlay ═══════════════════════════════════════════════════ -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner">
+            <div class="loading-spinner__ring"></div>
+            <span class="loading-spinner__text">Analyzing restaurants...</span>
+        </div>
+    </div>
+
+    <!-- ═══ Top App Bar ══════════════════════════════════════════════════════ -->
+    <header class="top-app-bar">
+        <div class="top-app-bar__left">
+            <button class="top-app-bar__menu-btn" id="menuBtn" title="Menu">
+                <span class="material-symbols-outlined" style="font-size:24px">menu</span>
+            </button>
+            <div class="top-app-bar__brand">
+                <span class="material-symbols-outlined top-app-bar__brand-icon">lunch_dining</span>
+                <span class="top-app-bar__brand-name">GastroAI</span>
+            </div>
+        </div>
+
+        <!-- Desktop Mode Toggle -->
+        <div class="top-app-bar__center" id="modeToggle">
+            <button class="mode-toggle-btn mode-toggle-btn--active" id="btnModeAI" data-mode="ai">AI Assistant</button>
+            <button class="mode-toggle-btn mode-toggle-btn--inactive" id="btnModeFilter" data-mode="filter">Filter Search</button>
+        </div>
+
+        <div class="top-app-bar__right">
+            <button class="notification-btn" title="Notifications">
+                <span class="material-symbols-outlined" style="font-size:28px">notifications</span>
+            </button>
+            <div class="user-profile">
+                <div class="user-profile__avatar">G</div>
+                <div class="user-profile__info">
+                    <p class="user-profile__name">Gastronome Elite</p>
+                    <p class="user-profile__tag">Premium Member</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ═══ Main Layout ══════════════════════════════════════════════════════ -->
+    <div class="main-layout">
+        <!-- ═══ Sidebar ══════════════════════════════════════════════════════ -->
+        <aside class="sidebar" id="sidebar">
+
+            <!-- ─── AI Assistant Mode: Navigation Sidebar ──────────────────── -->
+            <div id="sidebarNavMode" class="sidebar-nav">
+                <a href="#" class="sidebar-nav__link sidebar-nav__link--active" data-nav="ai">
+                    <span class="material-symbols-outlined">magic_button</span>
+                    <span>AI Assistant</span>
+                </a>
+                <a href="#" class="sidebar-nav__link" data-nav="search">
+                    <span class="material-symbols-outlined">search</span>
+                    <span>Search</span>
+                </a>
+                <a href="#" class="sidebar-nav__link" data-nav="favorites">
+                    <span class="material-symbols-outlined">favorite</span>
+                    <span>Favorites</span>
+                </a>
+                <a href="#" class="sidebar-nav__link" data-nav="history">
+                    <span class="material-symbols-outlined">history</span>
+                    <span>History</span>
+                </a>
+
+                <!-- Quick Filters -->
+                <div class="sidebar-quick-filters">
+                    <p class="sidebar-quick-filters__title">Quick Filters</p>
+                    <div class="sidebar-quick-filters__section">
+                        <label class="sidebar-quick-filters__label">Location</label>
+                        <div class="gastro-select-wrapper">
+                            <span class="material-symbols-outlined icon-left">location_on</span>
+                            <select class="gastro-select" id="sidebarLocationSelect">
+                                <option value="">Loading...</option>
+                            </select>
+                            <span class="material-symbols-outlined icon-right">expand_more</span>
+                        </div>
+                    </div>
+                    <div class="sidebar-quick-filters__section">
+                        <label class="sidebar-quick-filters__label">Dining Style</label>
+                        <div class="chip-group" id="sidebarDiningChips">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Link -->
+                <div class="sidebar-footer">
+                    <a href="#" class="sidebar-nav__link">
+                        <span class="material-symbols-outlined">settings</span>
+                        <span>Settings</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ─── Filter Search Mode: Full Filter Panel ─────────────────── -->
+            <div id="sidebarFilterMode" class="filter-panel hidden">
+                <div class="filter-panel__header">
+                    <h2 class="filter-panel__title">
+                        <span class="material-symbols-outlined" style="color:var(--primary-container)">filter_list</span>
+                        Filters
+                    </h2>
+                    <button class="filter-panel__clear-btn" id="clearFiltersBtn">Clear All</button>
+                </div>
+
+                <!-- Location -->
+                <div class="filter-section">
+                    <h3 class="filter-section__title">Location</h3>
+                    <div class="gastro-select-wrapper">
+                        <span class="material-symbols-outlined icon-left">location_on</span>
+                        <select class="gastro-select" id="filterLocationSelect">
+                            <option value="">Loading...</option>
+                        </select>
+                        <span class="material-symbols-outlined icon-right">expand_more</span>
+                    </div>
+                </div>
+
+                <!-- Number of People -->
+                <div class="filter-section">
+                    <h3 class="filter-section__title">Number of People</h3>
+                    <div class="people-stepper" id="peopleStepper">
+                        <button class="people-stepper__btn" id="peopleDecBtn" title="Decrease">
+                            <span class="material-symbols-outlined">remove</span>
+                        </button>
+                        <div class="people-stepper__display">
+                            <span class="people-stepper__value" id="peopleValue">2</span>
+                            <span class="people-stepper__label">people</span>
+                        </div>
+                        <button class="people-stepper__btn" id="peopleIncBtn" title="Increase">
+                            <span class="material-symbols-outlined">add</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Cuisines -->
+                <div class="filter-section">
+                    <h3 class="filter-section__title">
+                        Cuisines
+                        <span class="material-symbols-outlined" style="font-size:16px;cursor:pointer;color:var(--on-surface-variant)">search</span>
+                    </h3>
+                    <div id="cuisineCheckboxes" style="display:flex;flex-direction:column;gap:10px">
+                        <!-- Populated by JS -->
+                    </div>
+                    <button class="show-more-btn" id="showMoreCuisinesBtn">+ View more</button>
+                </div>
+
+                <!-- Rating -->
+                <div class="filter-section">
+                    <h3 class="filter-section__title">Rating</h3>
+                    <div class="chip-group" id="ratingChips">
+                        <button class="chip chip--active" data-rating="0">Any</button>
+                        <button class="chip" data-rating="3.5">3.5+ <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">star</span></button>
+                        <button class="chip" data-rating="4.0">4.0+ <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">star</span></button>
+                        <button class="chip" data-rating="4.5">4.5+ <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">star</span></button>
+                    </div>
+                </div>
+
+                <!-- Budget -->
+                <div class="filter-section" style="padding-bottom:16px;border-bottom:1px solid rgba(91,64,62,0.3)">
+                    <h3 class="filter-section__title">
+                        Budget (For 2 People)
+                        <span class="budget-value" id="budgetDisplay">₹0 - ₹3000</span>
+                    </h3>
+                    <input type="range" class="gastro-range" id="budgetSlider" min="0" max="6000" value="3000" step="100" />
+                    <div class="range-labels">
+                        <span>₹0</span>
+                        <span>₹6,000+</span>
+                    </div>
+                </div>
+
+                <!-- Dining Style -->
+                <div class="filter-section">
+                    <h3 class="filter-section__title">Dining Style</h3>
+                    <div id="diningStyleCheckboxes" style="display:flex;flex-direction:column;gap:10px">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Options -->
+                <div class="filter-section">
+                    <h3 class="filter-section__title">Options</h3>
+                    <div style="display:flex;flex-direction:column;gap:10px">
+                        <label class="gastro-checkbox">
+                            <input type="checkbox" id="filterOnlineOrder" />
+                            <span class="gastro-checkbox__label">Online Ordering</span>
+                        </label>
+                        <label class="gastro-checkbox">
+                            <input type="checkbox" id="filterBookTable" />
+                            <span class="gastro-checkbox__label">Table Booking</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Search Button -->
+                <button class="filter-search-btn" id="filterSearchBtn">
+                    <span class="material-symbols-outlined">search</span>
+                    Search Restaurants
+                </button>
+            </div>
+        </aside>
+
+        <!-- ═══ Main Content ═════════════════════════════════════════════════ -->
+        <main class="main-content" id="mainContent">
+
+            <!-- ─── AI Assistant View ──────────────────────────────────────── -->
+            <div id="aiAssistantView" class="ai-assistant-view">
+                <div class="ai-hero">
+                    <span class="material-symbols-outlined ai-hero__icon">restaurant</span>
+                    <h1 class="text-display-lg ai-hero__title">What are you craving?</h1>
+                    <p class="text-body-lg ai-hero__subtitle">Let GastroAI curate the perfect dining experience for you tonight.</p>
+                </div>
+
+                <!-- AI Input Box -->
+                <div class="ai-input-container">
+                    <div class="ai-input-box">
+                        <textarea id="aiQueryInput" placeholder="e.g., I want a romantic Italian place in Koramangala with a great ambiance, under ₹1500 for two..." rows="3"></textarea>
+                        <div class="ai-input-box__actions">
+                            <div class="ai-input-box__tools">
+                                <button class="ai-tool-btn" title="Use Voice">
+                                    <span class="material-symbols-outlined">mic</span>
+                                </button>
+                                <button class="ai-tool-btn" title="Upload Image">
+                                    <span class="material-symbols-outlined">image</span>
+                                </button>
+                            </div>
+                            <button class="btn-primary" id="aiSearchBtn">
+                                <span class="material-symbols-outlined">auto_awesome</span>
+                                Find Recommendations
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Suggestion Chips -->
+                <div class="suggestion-chips">
+                    <button class="suggestion-chip" data-query="Show me trending restaurants in Koramangala">
+                        <span class="material-symbols-outlined">trending_up</span>
+                        Trending in Koramangala
+                    </button>
+                    <button class="suggestion-chip" data-query="I want spicy North Indian food in Jayanagar under Rs.1000">
+                        <span class="material-symbols-outlined">local_fire_department</span>
+                        Spicy North Indian
+                    </button>
+                    <button class="suggestion-chip" data-query="Best fine dining Italian restaurants in Indiranagar with table booking">
+                        <span class="material-symbols-outlined">celebration</span>
+                        Fine Dining Italian
+                    </button>
+                </div>
+            </div>
+
+            <!-- ─── AI Results View (shown after search) ───────────────────── -->
+            <div id="aiResultsView" class="filter-search-view hidden">
+                <div id="aiResultsContent">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- ─── Filter Search View ─────────────────────────────────────── -->
+            <div id="filterSearchView" class="filter-search-view hidden">
+                <!-- Initial empty state -->
+                <div id="filterInitialState" class="filter-initial-state">
+                    <div class="empty-state">
+                        <span class="material-symbols-outlined">tune</span>
+                        <h3 class="empty-state__title">Configure your filters</h3>
+                        <p class="empty-state__subtitle">Use the filter panel on the left to set your preferences, then click "Search Restaurants".</p>
+                    </div>
+                </div>
+                <!-- Results -->
+                <div id="filterResultsContent" class="hidden">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- ─── Performance Footer ─────────────────────────────────────── -->
+            <footer class="perf-footer" id="perfFooter">
+                <div class="perf-footer__status">
+                    <span class="perf-footer__dot"></span>
+                    <span>System Online</span>
+                </div>
+                <span id="perfIntentParse">Intent Parse: <strong>—</strong></span>
+                <span id="perfDbQuery">DB Query: <strong>—</strong></span>
+                <span id="perfTotal">Total: <strong class="perf-footer__highlight">—</strong></span>
+            </footer>
+        </main>
+    </div>
+
+    <!-- ═══ Mobile Bottom Nav ════════════════════════════════════════════════ -->
+    <nav class="bottom-nav">
+        <a href="#" class="bottom-nav__link bottom-nav__link--active" data-mobile-nav="ai">
+            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">chat_bubble</span>
+            <span class="bottom-nav__label">Concierge</span>
+        </a>
+        <a href="#" class="bottom-nav__link" data-mobile-nav="filter">
+            <span class="material-symbols-outlined">explore</span>
+            <span class="bottom-nav__label">Discover</span>
+        </a>
+        <a href="#" class="bottom-nav__link" data-mobile-nav="saves">
+            <span class="material-symbols-outlined">bookmark</span>
+            <span class="bottom-nav__label">Saves</span>
+        </a>
+        <a href="#" class="bottom-nav__link" data-mobile-nav="profile">
+            <span class="material-symbols-outlined">person</span>
+            <span class="bottom-nav__label">Profile</span>
+        </a>
+    </nav>
+
+    <!-- App JavaScript -->
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
