@@ -97,7 +97,7 @@ class IntentParser:
             "- 'online_order': boolean (or null if not found)\n"
             "- 'book_table': boolean (or null if not found)\n"
             "- 'restaurant_type': array of strings (representing restaurant/dining experience types. You MUST ONLY extract from this list: ['Casual Dining', 'Fine Dining', 'Cafe', 'Pub', 'Bar', 'Lounge', 'Microbrewery', 'Sweet Shop', 'Quick Bites', 'Bakery', 'Dessert Parlor']. Do not extract descriptive keywords like 'rooftop', 'romantic', or 'cozy' into this list. Set to null/empty array if not found)\n"
-            "- 'ambience': array of strings (representing descriptive vibe/ambience keywords like 'romantic', 'rooftop', 'cozy', 'live music', 'quiet'. Set to null/empty array if not found)\n\n"
+            "- 'ambience': array of strings (representing descriptive vibe/ambience keywords like 'romantic', 'rooftop', 'cozy', 'live music', 'quiet', 'pet friendly'. Set to null/empty array if not found)\n\n"
             "Rules:\n"
             "1. Output ONLY the JSON object. Do NOT include any conversation, conversational wrapping, or introductory text.\n"
             "2. Ensure budget values are numeric (clean any currency symbols like Rs or ₹).\n"

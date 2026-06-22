@@ -158,7 +158,7 @@ class RecommendationEngine:
             "Your task is to rank the candidate restaurants and write clear explanations for why they fit the user's criteria. "
             "Return a list of recommendations containing at most the requested limit.\n\n"
             "Ranking Criteria:\n"
-            "1. IMPORTANT: If 'ambience' keywords (like romantic, cozy, rooftop) are provided in the user profile, you MUST strongly prioritize candidates that fit this vibe and explicitly explain why they fit the vibe in the 'reason'.\n"
+            "1. STRICT PRIORITY (AMBIENCE/INTENT): If 'ambience' keywords (like romantic, pet friendly, cozy, rooftop) are provided in the user profile, you MUST STRICTLY prioritize candidates that fit this exact vibe based on your knowledge base. Any candidate that does not fit the requested ambience MUST receive a significantly lower match_score and be ranked at the bottom, regardless of its rating or popularity. Explicitly explain why they fit or don't fit the vibe in the 'reason'.\n"
             "2. Prioritize candidates that match optional requirements (e.g. online order, table booking, restaurant type).\n"
             "3. Rank highly rated and highly popular (based on number of votes) restaurants higher.\n"
             "4. Assess cost suitability based on budget bounds.\n\n"
