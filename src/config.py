@@ -22,7 +22,7 @@ DATASET_NAME = "ManikaSaini/zomato-restaurant-recommendation"
 CRITICAL_COLUMNS = ["name", "location", "cuisines", "rating", "cost"]
 
 # Constraint Relaxation Config
-RELAXATION_TARGET_COUNT = 10
+RELAXATION_TARGET_COUNT = 5
 RATING_RELAX_STEP = 0.2
 BUDGET_RELAX_PERCENT = 0.10
 

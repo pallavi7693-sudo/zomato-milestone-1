@@ -89,14 +89,15 @@ class IntentParser:
             "You are a helpful Zomato search intent extraction assistant. "
             "Your task is to parse a user query and output a structured JSON object containing the search filters. "
             "Extract these fields strictly: \n"
-            "- 'location': string (or null if not found)\n"
+            "- 'location': string (or null if not found). ALWAYS correct common spelling mistakes in Bangalore location names (e.g., 'Kormanagala' -> 'Koramangala', 'Indra Nagar' -> 'Indiranagar').\n"
             "- 'cuisines': array of strings (or null/empty array if not found)\n"
             "- 'min_rating': float (or null if not found)\n"
             "- 'min_budget': float/int (or null if not found)\n"
             "- 'max_budget': float/int (or null if not found)\n"
             "- 'online_order': boolean (or null if not found)\n"
             "- 'book_table': boolean (or null if not found)\n"
-            "- 'restaurant_type': array of strings (representing restaurant/dining experience types. You MUST ONLY extract from this list: ['Casual Dining', 'Fine Dining', 'Cafe', 'Pub', 'Bar', 'Lounge', 'Microbrewery', 'Sweet Shop', 'Quick Bites', 'Bakery', 'Dessert Parlor']. Do not extract descriptive keywords like 'rooftop', 'romantic', or 'cozy' into this list. Set to null/empty array if not found)\n\n"
+            "- 'restaurant_type': array of strings (representing restaurant/dining experience types. You MUST ONLY extract from this list: ['Casual Dining', 'Fine Dining', 'Cafe', 'Pub', 'Bar', 'Lounge', 'Microbrewery', 'Sweet Shop', 'Quick Bites', 'Bakery', 'Dessert Parlor']. Do not extract descriptive keywords like 'rooftop', 'romantic', or 'cozy' into this list. Set to null/empty array if not found)\n"
+            "- 'ambience': array of strings (representing descriptive vibe/ambience keywords like 'romantic', 'rooftop', 'cozy', 'live music', 'quiet'. Set to null/empty array if not found)\n\n"
             "Rules:\n"
             "1. Output ONLY the JSON object. Do NOT include any conversation, conversational wrapping, or introductory text.\n"
             "2. Ensure budget values are numeric (clean any currency symbols like Rs or ₹).\n"
@@ -127,7 +128,7 @@ class IntentParser:
         for key in standardized.keys():
             if key in parsed:
                 # Type sanitization
-                if key in ["cuisines", "restaurant_type"] and parsed[key] is not None:
+                if key in ["cuisines", "restaurant_type", "ambience"] and parsed[key] is not None:
                     if isinstance(parsed[key], str):
                         standardized[key] = [parsed[key]]
                     elif isinstance(parsed[key], list):
@@ -240,5 +241,6 @@ class IntentParser:
             "max_budget": None,
             "online_order": None,
             "book_table": None,
-            "restaurant_type": []
+            "restaurant_type": [],
+            "ambience": []
         }

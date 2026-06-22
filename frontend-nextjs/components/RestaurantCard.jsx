@@ -1,4 +1,4 @@
-export default function RestaurantCard({ rec, index }) {
+export default function RestaurantCard({ rec, index, isFavorite, onToggleFavorite }) {
   const rating = rec.rating || 0;
   const matchScore = rec.match_score || 0;
   const cuisines = rec.cuisines || '';
@@ -21,6 +21,13 @@ export default function RestaurantCard({ rec, index }) {
           <span className="material-symbols-outlined">restaurant</span>
         </div>
         <div className="card-image__overlay"></div>
+        <button 
+          className="favorite-btn" 
+          onClick={(e) => { e.stopPropagation(); if (onToggleFavorite) onToggleFavorite(rec); }}
+          style={{ position: 'absolute', top: 12, right: 12, zIndex: 10, background: 'rgba(0,0,0,0.5)', border: 'none', borderRadius: '50%', width: 36, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: isFavorite ? 'var(--primary)' : 'white' }}
+        >
+          <span className="material-symbols-outlined" style={{ fontVariationSettings: isFavorite ? "'FILL' 1" : "'FILL' 0" }}>favorite</span>
+        </button>
         {rating > 0 && (
           <div className="card-rating-badge">
             <span className="card-rating-badge__value">{rating.toFixed(1)}</span>

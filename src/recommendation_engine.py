@@ -158,9 +158,10 @@ class RecommendationEngine:
             "Your task is to rank the candidate restaurants and write clear explanations for why they fit the user's criteria. "
             "Return a list of recommendations containing at most the requested limit.\n\n"
             "Ranking Criteria:\n"
-            "1. Prioritize candidates that match optional requirements (e.g. online order, table booking, restaurant type).\n"
-            "2. Rank highly rated and highly popular (based on number of votes) restaurants higher.\n"
-            "3. Assess cost suitability based on budget bounds.\n\n"
+            "1. IMPORTANT: If 'ambience' keywords (like romantic, cozy, rooftop) are provided in the user profile, you MUST strongly prioritize candidates that fit this vibe and explicitly explain why they fit the vibe in the 'reason'.\n"
+            "2. Prioritize candidates that match optional requirements (e.g. online order, table booking, restaurant type).\n"
+            "3. Rank highly rated and highly popular (based on number of votes) restaurants higher.\n"
+            "4. Assess cost suitability based on budget bounds.\n\n"
             "Output Format:\n"
             "Provide your output strictly as a JSON object matching the following structure:\n"
             "{\n"
@@ -189,7 +190,8 @@ class RecommendationEngine:
                 "max_budget": filters["max_budget"],
                 "online_order": "Yes" if filters["online_order"] else None,
                 "book_table": "Yes" if filters["book_table"] else None,
-                "restaurant_type": filters["restaurant_type"]
+                "restaurant_type": filters["restaurant_type"],
+                "ambience": filters.get("ambience", [])
             },
             "candidate_limit": limit,
             "candidates": compact_candidates

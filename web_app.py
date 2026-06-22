@@ -262,7 +262,7 @@ def api_filter():
         location_relaxed = candidates_data.get("location_relaxed", False)
         searched_locations = candidates_data.get("searched_locations", [location])
 
-        # 2. Rank candidates
+        # 2. Rank candidates (Deterministic for Filter Search)
         t0_rank = time.perf_counter()
         filters = {
             "location": location,
@@ -277,21 +277,11 @@ def api_filter():
         }
 
         fallback_applied = False
-        if engine.client and len(candidates) > 0:
-            try:
-                ranked_result = engine._rank_with_llm(
-                    filters, candidates[:20], "llama-3.3-70b-versatile", limit
-                )
-            except Exception:
-                ranked_result = engine._rank_with_heuristics(
-                    filters, candidates, limit
-                )
-                fallback_applied = True
-        else:
-            ranked_result = engine._rank_with_heuristics(
-                filters, candidates, limit
-            )
-            fallback_applied = True
+        # Filter search should be deterministic, so we skip the LLM ranking
+        # and strictly rank candidates by our match formula.
+        ranked_result = engine._rank_with_heuristics(
+            filters, candidates, limit
+        )
 
         rank_ms = (time.perf_counter() - t0_rank) * 1000.0
         total_ms = (time.perf_counter() - start) * 1000.0

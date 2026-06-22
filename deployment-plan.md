@@ -1,63 +1,40 @@
-# GastroAI Deployment Plan (Vercel + Railway)
+# GastroAI Deployment Plan (Next.js on Vercel + API on Railway/Render)
 
-This plan outlines the steps to decouple the monolithic Flask application into a standalone frontend (deployed on Vercel) and a REST API backend (deployed on Railway).
+This plan outlines the steps to deploy the application. It consists of a modern Next.js frontend and a Flask REST API backend.
 
-## Database Strategy
-Railway's filesystem is ephemeral, meaning any writes to the SQLite database will be lost when the app restarts. However, since our application only *reads* from the database for searches, we safely use the bundled `restaurants.db`. 
-The database is small (~1.8MB), so it is committed to the repository and the Railway build will include the pre-built database.
-
-## CORS Configuration
-By separating the frontend and backend, they will be hosted on different domains. `flask-cors` is added to the backend to allow the Vercel frontend to make API requests. 
-For security, you should configure CORS to *only* accept requests from your Vercel deployment URL (once generated).
-
----
-
-## 1. Backend Modifications (Railway)
-
-The Flask application is prepared for production on Railway.
-
-- **`requirements.txt`**: Added `gunicorn` (production WSGI server) and `flask-cors` (to handle Cross-Origin Resource Sharing).
-- **`web_app.py`**: Imported and initialized `flask-cors` for the Vercel frontend.
-- **`Procfile`**: Created to tell Railway how to run the application using Gunicorn:
+## 1. Backend Modifications (Railway / Render)
+The Flask application is prepared for production:
+- **`requirements.txt`**: Includes `gunicorn` and `flask-cors`.
+- **`web_app.py`**: Handles API routes (`/api/...`) and configures CORS.
+- **Database**: The SQLite database (`data/restaurants.db`) is committed to the repo, so it is deployed along with the backend. Since the app only reads from the DB, the ephemeral filesystem of Railway/Render is perfectly fine.
+- **Procfile**: Tells the hosting provider how to run the app:
   ```text
   web: gunicorn web_app:app --bind 0.0.0.0:$PORT
   ```
-- **`.gitignore`**: Removed the rule ignoring `data/*.db` so that `restaurants.db` is tracked and available to Railway at runtime.
+
+### Backend Deployment Steps
+1. Deploy the root of this repository to Railway or Render.
+2. Ensure you add `GROQ_API_KEY` to the environment variables on the hosting provider.
+3. Note your generated backend URL (e.g., `https://gastroai-backend.onrender.com`).
 
 ---
 
-## 2. Frontend Modifications (Vercel)
+## 2. Frontend Modifications (Next.js on Vercel)
+The new frontend is built using Next.js 14 and is located in the `frontend-nextjs` directory.
 
-The frontend is configured to be served statically by Vercel and point its API requests to the Railway backend.
+### CRITICAL: Fixing Vercel Configuration
+If you previously deployed the app and the frontend was broken or looked like the old static site, it's because Vercel was trying to deploy the old HTML files instead of the Next.js app! 
 
-- **`vercel.json`**: Created a Vercel configuration file to define how the static site is served, effectively treating the `templates` and `static` folders as a static project.
-  ```json
-  {
-    "rewrites": [
-      { "source": "/", "destination": "/templates/index.html" },
-      { "source": "/(.*)", "destination": "/static/$1" }
-    ]
-  }
-  ```
-- **`static/js/app.js`**: Defined a `BACKEND_URL` variable. All `fetch()` calls (e.g., `fetch('/api/recommend')`) use the `BACKEND_URL`.
+To deploy the Next.js app correctly, follow these exact steps in your Vercel Dashboard:
 
----
+1. **Delete the old `vercel.json` file** from the root of your GitHub repository (I have already removed it for you locally, just commit the change). The old `vercel.json` was forcing Vercel to serve the old static HTML site.
+2. Go to your project on Vercel -> **Settings** -> **General**.
+3. Scroll down to **Root Directory** and click **Edit**.
+4. Type `frontend-nextjs` and click Save. 
+5. Scroll down to **Environment Variables**.
+6. Add a new variable:
+   - **Key**: `NEXT_PUBLIC_BACKEND_URL`
+   - **Value**: Your backend URL from step 1 (e.g., `https://gastroai-backend.onrender.com`). Do not include a trailing slash.
+7. Go to the **Deployments** tab and click **Redeploy** on your latest commit.
 
-## Deployment Workflow
-
-### Step 1: Deploy Backend to Railway
-1. Go to [Railway.app](https://railway.app/).
-2. Create a new project -> Deploy from GitHub repo -> Select `zomato-milestone-1`.
-3. Add the `GROQ_API_KEY` to the Railway Environment Variables.
-4. Once deployed, Railway will generate a public URL (e.g., `https://gastroai-backend.up.railway.app`).
-
-### Step 2: Deploy Frontend to Vercel
-1. Update `static/js/app.js` with the newly generated Railway URL:
-   ```javascript
-   const BACKEND_URL = 'https://gastroai-backend.up.railway.app';
-   ```
-2. Push the update to GitHub.
-3. Go to [Vercel.com](https://vercel.com/).
-4. Create a new project -> Import the `zomato-milestone-1` repository.
-5. Vercel will automatically detect the static configuration and deploy the frontend.
-6. (Optional) Update the CORS settings in `web_app.py` on Railway to explicitly only allow the generated Vercel domain.
+Vercel will now correctly detect Next.js, run `npm run build`, and serve your beautiful new React frontend!
