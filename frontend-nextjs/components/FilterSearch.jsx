@@ -17,13 +17,23 @@ export default function FilterSearch({ results, favorites = [], onToggleFavorite
           </div>
         </div>
 
-        {relaxation_applied && (
-          <div style={{ backgroundColor: 'var(--primary-container)', color: 'var(--on-primary-container)', padding: '16px', borderRadius: '12px', marginBottom: '24px', display: 'flex', gap: '12px', alignItems: 'center' }}>
+        {(relaxation_applied || location_relaxed) && (
+          <div style={{ backgroundColor: '#332b00', color: '#ffcc00', padding: '16px', borderRadius: '12px', marginBottom: '24px', display: 'flex', gap: '12px', alignItems: 'center' }}>
             <span className="material-symbols-outlined">info</span>
-            <p style={{ margin: 0, fontSize: '14px' }}>
-              We found fewer than 5 exact matches, so we dynamically relaxed some constraints to find the best alternatives.
-              {location_relaxed && searched_locations?.length > 1 && ` We also expanded the search to nearby areas: ${searched_locations.slice(1).join(', ')}.`}
-            </p>
+            <div style={{ margin: 0, fontSize: '14px', lineHeight: '1.5' }}>
+              <p style={{ margin: 0, fontWeight: '500' }}>We dynamically relaxed some constraints to find the best alternatives:</p>
+              <ul style={{ margin: '8px 0 0 20px', padding: 0 }}>
+                {results.original_constraints?.min_rating > results.final_constraints?.min_rating && (
+                  <li><strong>Rating</strong>: Relaxed from {results.original_constraints.min_rating}+ to {results.final_constraints.min_rating}+</li>
+                )}
+                {results.original_constraints?.max_budget < results.final_constraints?.max_budget && (
+                  <li><strong>Budget</strong>: Expanded maximum from ₹{results.original_constraints.max_budget} to ₹{results.final_constraints.max_budget}</li>
+                )}
+                {location_relaxed && searched_locations?.length > 1 && (
+                  <li><strong>Location</strong>: Expanded search from {results.original_constraints?.location || 'your area'} to nearby areas ({searched_locations.slice(1).join(', ')})</li>
+                )}
+              </ul>
+            </div>
           </div>
         )}
 
