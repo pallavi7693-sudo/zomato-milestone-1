@@ -3,10 +3,17 @@ import { useState, useEffect } from 'react';
 import { fetchLocations, fetchCuisines, fetchFilterRecommendations } from '../utils/api';
 
 export default function Sidebar({ mode, setMode, onFilterSearch, setIsLoading, onAddToHistory }) {
-  const [locations, setLocations] = useState([]);
-  const [cuisines, setCuisines] = useState([]);
+  const [locations, setLocations] = useState([
+    "Jayanagar", "Banashankari", "Basavanagudi", "JP Nagar",
+    "Koramangala", "Indiranagar", "Whitefield", "HSR Layout",
+    "Malleshwaram", "MG Road"
+  ]);
+  const [cuisines, setCuisines] = useState([
+    "Italian", "Chinese", "Biryani", "North Indian", "South Indian",
+    "Fast Food", "Continental", "Desserts", "Bakery", "Beverages"
+  ]);
   
-  const [selectedLoc, setSelectedLoc] = useState('');
+  const [selectedLoc, setSelectedLoc] = useState('Jayanagar');
   const [selectedCuisines, setSelectedCuisines] = useState([]);
   const [budget, setBudget] = useState(3000);
   const [people, setPeople] = useState(2);
@@ -16,8 +23,15 @@ export default function Sidebar({ mode, setMode, onFilterSearch, setIsLoading, o
   const [bookTable, setBookTable] = useState(false);
 
   useEffect(() => {
-    fetchLocations().then(l => { setLocations(l); if(l[0]) setSelectedLoc(l[0]); });
-    fetchCuisines().then(c => setCuisines(c));
+    fetchLocations().then(l => { 
+      if (l && l.length > 0) {
+        setLocations(l); 
+        setSelectedLoc(prev => prev || l[0]); 
+      }
+    });
+    fetchCuisines().then(c => {
+      if (c && c.length > 0) setCuisines(c);
+    });
   }, []);
 
   const handleSearch = async () => {
