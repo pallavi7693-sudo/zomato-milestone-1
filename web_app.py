@@ -27,8 +27,8 @@ logger = logging.getLogger("gastroai_web")
 # Initialize Flask app
 app = Flask(__name__)
 
-# Configure CORS (allow all origins for now, we can restrict this later to the vercel domain)
-CORS(app, resources={r"/api/*": {"origins": "*"}})
+# Configure CORS (allow all origins, headers, and methods)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Initialize recommendation engine (singleton)
 engine = RecommendationEngine()
